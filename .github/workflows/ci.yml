@@ -37,13 +37,13 @@ jobs:
       - name: Zip Lambda Function
         run: |
           mkdir -p deployment
-          cp app.py deployment/
+          cp lambda_function.py deployment/
           cd deployment
-          zip -r ../lambda_function.zip .
-
+          zip -r ../function.zip .
+      
       - name: Deploy to AWS Lambda
         run: |
           aws lambda update-function-code \
             --function-name greeting-timestamp-lambda \
-            --zip-file fileb://lambda_function.zip
+            --zip-file fileb://function.zip
        
