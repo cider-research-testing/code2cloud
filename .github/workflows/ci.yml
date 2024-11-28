@@ -33,4 +33,17 @@ jobs:
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: aws s3 ls
+          
+      - name: Zip Lambda Function
+        run: |
+          mkdir -p deployment
+          cp app.py deployment/
+          cd deployment
+          zip -r ../lambda_function.zip .
+
+      - name: Deploy to AWS Lambda
+        run: |
+          aws lambda update-function-code \
+            --function-name greeting-timestamp-lambda \
+            --zip-file fileb://lambda_function.zip
        
