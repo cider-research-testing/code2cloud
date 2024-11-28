@@ -8,7 +8,7 @@ def lambda_handler(event, context):
     # Create greeting message
     message = f"Hello! שלום Salam Current timestamp is: {current_time}"
 
-    response = requests.get("https://whatthefuckismyip")
+    response = requests.get("https://wtfismyip.com/json")
     
     # Return response
     return {
