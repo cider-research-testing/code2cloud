@@ -50,9 +50,18 @@ jobs:
           cd deployment/package
           zip -r ../../function.zip .
       
-      - name: Deploy to AWS Lambda
+      - name: Deploy to AWS Lambda CLI
         run: |
           aws lambda update-function-code \
             --function-name greeting-timestamp-lambda \
             --zip-file fileb://function.zip
+
+      - name: Appleboy Lambda Deploy
+        uses: appleboy/lambda-action@v0.2.0
+        with:
+            aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY }}
+            aws_secret_access_key: ${{ secrets.AWS_SECRET }}
+            aws_region: us-east-1
+            function_name: greeting-timestamp-lambda2
+            zip_file: function.zip
        
