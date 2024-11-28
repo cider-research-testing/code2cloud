@@ -6,7 +6,7 @@ def lambda_handler(event, context):
     current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     
     # Create greeting message
-    message = f"Hello! Current timestamp is: {current_time}"
+    message = f"Hello! שלום Salam Current timestamp is: {current_time}"
     
     # Return response
     return {
