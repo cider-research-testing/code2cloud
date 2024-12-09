@@ -16,7 +16,7 @@ resource "aws_lambda_function" "test_lambda" {
   # path.module in the filename.
   filename      = "function.zip"
   function_name = "greeting-timestamp-lambda_3_tf"
-  role          = "arn:aws:iam::050446384457:user/github-actions-deployer"
+  role          = "arn:aws:iam::050446384457:role/service-role/greeting-timestamp-lambda-role-0jr1suml"
   handler       = "lambda_function.lambda_handler"
  
   source_code_hash = filebase64sha256("function.zip")
