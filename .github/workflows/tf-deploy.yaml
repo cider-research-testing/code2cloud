@@ -39,10 +39,6 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET }}
           aws-region: us-east-1  # Replace with your AWS region
-
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: aws s3 ls
           
       - name: Zip Lambda Function
         run: |
