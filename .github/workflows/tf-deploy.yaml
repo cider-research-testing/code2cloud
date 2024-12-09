@@ -24,6 +24,9 @@ jobs:
         uses: actions/setup-python@v3
         with:
           python-version: '3.13'
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3.1.2
     
       - name: Install dependencies
         run: |
@@ -47,9 +50,17 @@ jobs:
           cd deployment/package
           zip -r ../../function.zip .
       
-      - name: Deploy to AWS Lambda CLI
-        run: |
-          aws lambda update-function-code \
-            --function-name greeting-timestamp-lambda \
-            --zip-file fileb://function.zip
+      - name: Terraform Init
+        run: terraform init
+      
+      - name: Terraform Validate
+        run: terraform validate
+      
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
+      
+      - name: Terraform Apply
+        # Only apply on push to main branch
+        if: github.ref == 'refs/heads/main'
+        run: terraform apply -auto-approve tfplan
        
