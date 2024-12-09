@@ -1,0 +1,58 @@
+# This is a basic workflow to help you get started with Actions
+
+name: TF Deploy
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.13'
+    
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt -t ./deployment/package
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET }}
+          aws-region: us-east-1  # Replace with your AWS region
+
+      # Runs a single command using the runners shell
+      - name: Run a one-line script
+        run: aws s3 ls
+          
+      - name: Zip Lambda Function
+        run: |
+          cp lambda_function.py deployment/package/
+          cd deployment/package
+          zip -r ../../function.zip .
+      
+      - name: Deploy to AWS Lambda CLI
+        run: |
+          aws lambda update-function-code \
+            --function-name greeting-timestamp-lambda \
+            --zip-file fileb://function.zip
+       
