@@ -5,7 +5,7 @@ on:
 
 env:
   AWS_REGION: us-east-1  # Replace with your desired AWS region
-  ECR_REPOSITORY: 050446384457.dkr.ecr.us-east-1.amazonaws.com/code2prod  # Replace with your ECR repository name
+  ECR_REPOSITORY: code2prod  # Replace with your ECR repository name
   LAMBDA_FUNCTION_NAME: greeting-timestamp-lambda_3_image  # Replace with your Lambda function name
 
 jobs:
