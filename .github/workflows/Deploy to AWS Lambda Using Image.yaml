@@ -41,7 +41,7 @@ jobs:
     
     - name: Update Lambda function code
       run: |
-        echo ###Updating function with image: $(ECR_REGISTRY)/$(ECR_REPOSITORY):$(IMAGE_TAG)
+        echo "Image URI: $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
         aws lambda update-function-code \
           --function-name $LAMBDA_FUNCTION_NAME \
           --image-uri $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
