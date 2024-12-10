@@ -1,14 +1,12 @@
 name: Deploy to AWS Lambda
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch
 
 env:
   AWS_REGION: us-east-1  # Replace with your desired AWS region
-  ECR_REPOSITORY: your-ecr-repository-name  # Replace with your ECR repository name
-  LAMBDA_FUNCTION_NAME: your-lambda-function-name  # Replace with your Lambda function name
+  ECR_REPOSITORY: code2prod  # Replace with your ECR repository name
+  LAMBDA_FUNCTION_NAME: greeting-timestamp-lambda_3_image  # Replace with your Lambda function name
 
 jobs:
   deploy:
@@ -47,7 +45,4 @@ jobs:
           --function-name $LAMBDA_FUNCTION_NAME \
           --image-uri $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
     
-    - name: Verify Lambda deployment
-      run: |
-        # Optional: Add any verification steps here
-        aws lambda get-function --function-name $LAMBDA_FUNCTION_NAME
+
