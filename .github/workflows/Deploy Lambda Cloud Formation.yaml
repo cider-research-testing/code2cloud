@@ -28,14 +28,13 @@ jobs:
           cd deployment/package
           zip -r ../../function.zip .
 
-
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v4
       with:
-         aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY }}
-         aws_secret_access_key: ${{ secrets.AWS_SECRET }}
-         aws_region: us-east-1
-
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET }}
+        aws-region: us-east-1  # Replace with your AWS region
+          
     - name: Upload Lambda package to S3
       run: |
         aws s3 cp function.zip s3://my-lambda-deployment-bucket-yaron/function.zip
