@@ -28,13 +28,17 @@ jobs:
           cd deployment/package
           zip -r ../../function.zip .
 
-    - name: Upload Lambda package to S3
-      run: |
-        aws s3 cp function.zip s3://my-lambda-deployment-bucket-yaron/function.zip
-      env:
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
           aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY }}
           aws_secret_access_key: ${{ secrets.AWS_SECRET }}
           aws_region: us-east-1
+
+    - name: Upload Lambda package to S3
+      run: |
+        aws s3 cp function.zip s3://my-lambda-deployment-bucket-yaron/function.zip
 
     - name: Deploy CloudFormation stack
       run: |
@@ -42,7 +46,4 @@ jobs:
           --template-file cloudformation-template.yaml \\
           --stack-name MyLambdaStack \\
           --capabilities CAPABILITY_NAMED_IAM
-      env:
-          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY }}
-          aws_secret_access_key: ${{ secrets.AWS_SECRET }}
-          aws_region: us-east-1
+
