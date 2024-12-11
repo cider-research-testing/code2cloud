@@ -44,7 +44,7 @@ jobs:
 
     - name: Deploy CloudFormation stack
       run: |
-        aws cloudformation deploy --template-file cloudformation-template.yaml --stack-name MyLambdaStack --capabilities CAPABILITY_NAMED_IAM
+        aws cloudformation deploy --template-file cloudformation-template.yaml --stack-name MyLambdaStack
 
     - name: Handle Deployment Error
       if: failure()  # This step will run only if the previous step fails
