@@ -1,20 +1,21 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: CloudFormation template to create and deploy an AWS Lambda function
 
-MyLambdaFunction:
-  Type: "AWS::Lambda::Function"
-  Properties:
-    FunctionName: "greeting-timestamp-lambda_3_cloud_formation"
-    Runtime: "python3.13" # Change to your preferred runtime
-    Handler: "lambda_function.lambda_handler" # Modify as needed
-    Role: "arn:aws:iam::050446384457:role/service-role/greeting-timestamp-lambda-role-0jr1suml"
-    Code:
-      S3Bucket: "my-lambda-deployment-bucket-yaron" # Replace with your S3 bucket name
-      S3Key: "path/to/your/lambda-code.zip" # Replace with your zip file path
-    Timeout: 10
-    MemorySize: 128
+Resources:
+  MyLambdaFunction:
+    Type: "AWS::Lambda::Function"
+    Properties:
+      FunctionName: "greeting-timestamp-lambda_3_cloud_formation"
+      Runtime: "python3.13"
+      Handler: "lambda_function.lambda_handler"
+      Role: "arn:aws:iam::050446384457:role/service-role/greeting-timestamp-lambda-role-0jr1suml"
+      Code:
+        S3Bucket: "my-lambda-deployment-bucket-yaron"
+        S3Key: "path/to/your/lambda-code.zip"
+      Timeout: 10
+      MemorySize: 128
 
 Outputs:
-LambdaFunctionName:
-  Description: "The name of the Lambda function created."
-  Value: !Ref MyLambdaFunction
+  LambdaFunctionName:
+    Description: "The name of the Lambda function created."
+    Value: !Ref MyLambdaFunction
