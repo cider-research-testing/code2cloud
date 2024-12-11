@@ -1,6 +1,3 @@
-AWSTemplateFormatVersion: "2010-09-09"
-Description: CloudFormation template to create and deploy an AWS Lambda function
-
 Resources:
   MyLambdaFunction:
     Type: "AWS::Lambda::Function"
@@ -11,11 +8,6 @@ Resources:
       Role: "arn:aws:iam::050446384457:role/service-role/greeting-timestamp-lambda-role-0jr1suml"
       Code:
         S3Bucket: "my-lambda-deployment-bucket-yaron"
-        S3Key: "path/to/your/lambda-code.zip"
+        S3Key: "function.zip"
       Timeout: 10
       MemorySize: 128
-
-Outputs:
-  LambdaFunctionName:
-    Description: "The name of the Lambda function created."
-    Value: !Ref MyLambdaFunction
