@@ -1,9 +1,7 @@
 name: Deploy Lambda
 
 on:
-  push:
-    branches:
-      - main
+ workflow_dispatch:
 
 jobs:
   deploy:
@@ -11,15 +9,21 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
+
+    - name: Zip Lambda Function
+      run: |
+          cp lambda_function.py deployment/package/
+          cd deployment/package
+          zip -r ../../function.zip .
 
     - name: Upload Lambda package to S3
       run: |
-        aws s3 cp lambda-code.zip s3://my-lambda-deployment-bucket/path/to/your/lambda-code.zip
+        aws s3 cp function.zip s3://my-lambda-deployment-bucket-yaron/function.zip
       env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_REGION: ${{ secrets.AWS_REGION }}
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET }}
+          aws_region: us-east-1
 
     - name: Deploy CloudFormation stack
       run: |
@@ -28,6 +32,6 @@ jobs:
           --stack-name MyLambdaStack \\
           --capabilities CAPABILITY_NAMED_IAM
       env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_REGION: ${{ secrets.AWS_REGION }}
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET }}
+          aws_region: us-east-1
