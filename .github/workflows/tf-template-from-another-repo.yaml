@@ -46,10 +46,11 @@ jobs:
           cd deployment/package
           zip -r ../../function.zip .
 
-      - name: Clone Infra Repo
+      - name: Create Deployment
         run: | 
             git clone https://github.com/cider-research-testing/code-2-prod-templates.git
             cp terraform.tfvars code-2-prod-templates
+            cp function.zip code-2-prod-templates
             cd code-2-prod-templates
             terraform init
             terraform validate
