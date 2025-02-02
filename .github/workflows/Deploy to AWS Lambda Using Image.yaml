@@ -45,7 +45,7 @@ jobs:
           --function-name $LAMBDA_FUNCTION_NAME \
           --image-uri $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
-  test:
+  compose:
     name: Test use Docker Compose
     runs-on: ubuntu-latest
     steps:
@@ -54,4 +54,13 @@ jobs:
       - name: Docker compose build
         run: docker compose build    
       
+  buildx:
+    name: buildx
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Docker compose build
+        run: docker buildx build --platform linux/amd64,linux/arm64 -t your-image-name:tag .
+ 
 
