@@ -88,6 +88,8 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build with Pack
+      env:
+         GOOGLE_ENTRYPOINT: "lambda_function.py"
       uses: dfreilich/pack-action@main
       with:
         args: 'build myapp --builder gcr.io/buildpacks/builder:v1'
