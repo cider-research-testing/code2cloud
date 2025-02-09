@@ -41,13 +41,4 @@ jobs:
       run: |
         # Deploy the VM image to your cloud provider
         # Example for AWS using AWS CLI
-        aws ec2 describe-images --filters "Name=name,Values=my-vm-image"
-        
-    - name: Update code
-      run: |
-        # Example of updating code
-        git pull origin main
-        # If you have specific update commands, include them here
-
-    - name: Notify completion
-      run: echo "Build and deployment completed successfully."
+        aws ec2 describe-images --filters "Name=name,Values=my-vm-image"       
