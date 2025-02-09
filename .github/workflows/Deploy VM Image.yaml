@@ -27,7 +27,7 @@ jobs:
 
     - name: Build VM image
       run: |
-        # Use a tool like Packer to build the VM image
+        packer init
         packer build template.json
 
     - name: Configure AWS credentials
