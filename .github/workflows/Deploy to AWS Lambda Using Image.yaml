@@ -95,8 +95,8 @@ jobs:
         args: 'build myapp --builder gcr.io/buildpacks/builder:v1'
     - name: Push to registry
       run: |
-        docker tag myapp gcr.io/ycider/buildpacks
-        docker push gcr.io/ycider/buildpacks
+        docker tag myapp ycider/buildpacks
+        docker push ycider/buildpacks
 
  
 
