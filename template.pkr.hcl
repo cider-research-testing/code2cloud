@@ -10,7 +10,7 @@ packer {
 
 source "amazon-ebs" "my_vm" {
   region        = "us-east-1"
-  source_ami    = "ami-085ad6ae776d8f09c"
+  source_ami    = "ami-04b4f1a9cf54c11d0"
   instance_type = "t3.micro"
   ssh_username  = "ubuntu"
   ami_name      = "my-vm-image-${formatdate("YYYYMMDD-hhmmss", timestamp())}"
