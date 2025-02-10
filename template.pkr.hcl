@@ -15,7 +15,8 @@ source "amazon-ebs" "my_vm" {
   ssh_username  = "ubuntu"
   ami_name      = "my-vm-image-${formatdate("YYYYMMDD-hhmmss", timestamp())}"
 
-  ssh_private_key_file = "~/.ssh/packer_key"
+  temporary_key_pair_type = "ed25519"
+  
 }
 
 build {
