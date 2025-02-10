@@ -8,7 +8,7 @@ packer {
 }
 
 source "amazon-ebs" "my_vm" {
-  region        = "us-west-2"
+  region        = "us-east-1"
   source_ami    = "ami-0e532fbed6ef00604"
   instance_type = "t2.micro"
   ssh_username  = "ubuntu"
