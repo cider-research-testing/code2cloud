@@ -35,14 +35,18 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET }}
         aws-region: ${{ env.AWS_REGION }}
 
+    - name: Setup SSH Key
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.PACKER_SSH_PRIVATE_KEY }}" > ~/.ssh/packer_key
+        chmod 600 ~/.ssh/packer_key
+
     - name: Build VM image
       run: |
         packer init .
         packer fmt -check .
         packer validate .
         packer build .
-
-
 
     - name: Deploy VM image
       run: |
