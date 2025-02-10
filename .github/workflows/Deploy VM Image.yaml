@@ -43,7 +43,7 @@ jobs:
 
     - name: Build VM image
       run: |
-        packer init .
+        packer init . -debug
         packer fmt -check .
         packer validate .
         packer build .
