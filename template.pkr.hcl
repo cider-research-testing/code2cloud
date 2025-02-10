@@ -14,7 +14,7 @@ source "amazon-ebs" "my_vm" {
   instance_type = "t3.micro"
   ssh_username  = "ubuntu"
   ami_name      = "my-vm-image-${formatdate("YYYYMMDD-hhmmss", timestamp())}"
-  ssh_keypair_name = "my-packer-key"
+  ssh_private_key_file = "my-packer-key"
 }
 
 build {
