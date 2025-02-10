@@ -27,8 +27,10 @@ jobs:
 
     - name: Build VM image
       run: |
-        packer init template.pkr
-        packer build template.pkr
+        packer init .
+        packer fmt -check .
+        packer validate .
+        packer build .
 
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v4
