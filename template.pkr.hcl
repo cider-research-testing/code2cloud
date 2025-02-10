@@ -14,8 +14,8 @@ source "amazon-ebs" "my_vm" {
   ssh_username  = "ubuntu"
   ami_name      = "my-vm-image-${formatdate("YYYYMMDD-hhmmss", timestamp())}"
 
- # UEFI boot mode configuration
-  launch_block_device_mappings {
+ 
+launch_block_device_mappings {
     device_name           = "/dev/sda1"
     volume_size           = 20
     volume_type           = "gp2"
