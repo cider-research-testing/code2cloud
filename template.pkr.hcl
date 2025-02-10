@@ -1,3 +1,4 @@
+
 packer {
   required_plugins {
     amazon = {
@@ -13,7 +14,6 @@ source "amazon-ebs" "my_vm" {
   instance_type = "t2.small"
   ssh_username  = "ubuntu"
   ami_name      = "my-vm-image-${formatdate("YYYYMMDD-hhmmss", timestamp())}"
- 
 }
 
 build {
