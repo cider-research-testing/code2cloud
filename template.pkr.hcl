@@ -13,9 +13,8 @@ source "amazon-ebs" "my_vm" {
   source_ami    = "ami-085ad6ae776d8f09c"
   instance_type = "t3.micro"
   ssh_username  = "ubuntu"
-  ami_name      = "my-vm-image-${formatdate("YYYYMMDD-hhmmss", timestamp())}"
-
   temporary_key_pair_type = "ed25519" 
+  ami_name      = "my-vm-image-${formatdate("YYYYMMDD-hhmmss", timestamp())}"  
 }
 
 build {
