@@ -13,12 +13,7 @@ source "amazon-ebs" "my_vm" {
   instance_type = "t2.small"
   ssh_username  = "ubuntu"
   ami_name      = "my-vm-image-${formatdate("YYYYMMDD-hhmmss", timestamp())}"
-
-  boot_mode = "uefi"
-
-  # Ensure the source AMI supports UEFI
-  # You might need to change the source_ami to a UEFI-compatible image
-  imds_support = "v2.0"
+ 
 }
 
 build {
