@@ -1,5 +1,8 @@
 name: Build and Deploy VM Image
 
+env:
+  AWS_REGION: us-east-1  # Replace with your desired AWS region
+  
 on:
  workflow_dispatch:
 
