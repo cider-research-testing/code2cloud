@@ -30,4 +30,9 @@ build {
       "pip3 install -r /path/to/your/requirements.txt"
     ]
   }
+
+  provisioner "file" {
+    source = "main.py"
+    destination = "/opt/my-soft/main.py"
+  }
 }
