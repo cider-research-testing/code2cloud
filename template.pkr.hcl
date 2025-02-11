@@ -25,14 +25,14 @@ build {
 
   provisioner "file" {
     source      = "main.py"
-    destination = "/opt/my-soft/main.py"
+    destination = "/tmp/main.py"
   }
 
   provisioner "shell" {
     inline = [
       "sudo apt-get update",
       "sudo apt-get install -y python3-pip",
-      "python3 /opt/my-soft/main.py"
+      "python3 /tmp/main.py"
     ]
   }
 }
