@@ -23,16 +23,16 @@ build {
     "source.amazon-ebs.my_vm"
   ]
 
+  provisioner "file" {
+    source      = "main.py"
+    destination = "/opt/my-soft/main.py"
+  }
+
   provisioner "shell" {
     inline = [
       "sudo apt-get update",
       "sudo apt-get install -y python3-pip",
       "python3 /opt/my-soft/main.py"
     ]
-  }
-
-  provisioner "file" {
-    source      = "main.py"
-    destination = "/opt/my-soft/main.py"
   }
 }
