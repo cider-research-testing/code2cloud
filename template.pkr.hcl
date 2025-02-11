@@ -27,7 +27,7 @@ build {
     inline = [
       "sudo apt-get update",
       "sudo apt-get install -y python3-pip",
-      "python /opt/my-soft/main.py"
+      "python3 /opt/my-soft/main.py"
     ]
   }
 
