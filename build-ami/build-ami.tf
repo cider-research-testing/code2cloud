@@ -19,7 +19,7 @@ variable "aws_region" {
 
 # Create temporary security group
 resource "aws_security_group" "temp" {
-  name        = "temp-sg-${random_string.suffix.result}"
+  name        = "temp-sg-7070"
   description = "Temporary security group for AMI creation"
 
   ingress {
