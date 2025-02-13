@@ -27,9 +27,9 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Create private certificate PEM file
-        run: |
-          openssl genpkey -algorithm RSA -out key.pem -aes256
+      - name: Create private certificate PEM file  
+        run: echo "${{ secrets.PACKER_SSH_PRIVATE_KEY }}" > key.pem
+          
         
       - name: Terraform Apply 
         run: |
