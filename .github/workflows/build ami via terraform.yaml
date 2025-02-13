@@ -27,6 +27,11 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET }}
           aws-region: ${{ env.AWS_REGION }}
 
+      - name: Create private certificate PEM file
+        run: |
+          echo "${{ secrets.PRIVATE_CERT_PEM }}" > key.pem
+        shell: bash
+
       - name: Terraform Apply 
         run: |
           cd build-ami
