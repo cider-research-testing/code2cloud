@@ -26,7 +26,7 @@ resource "aws_instance" "ami_builder" {
   }
 
   provisioner "file" {
-    source      = "scripts/main.py"
+    source      = "main.py"
     destination = "/tmp/main.py"  # Copy script to the instance
   }
 
@@ -55,6 +55,7 @@ resource "aws_instance" "ami_builder" {
 resource "aws_ami" "generated_ami" {
   name        = "my-custom-ami"
   description = "AMI built with Terraform and GitHub Actions"
+  root_device_name = "/dev/sda1"
 }
 
 output "ami_id" {
