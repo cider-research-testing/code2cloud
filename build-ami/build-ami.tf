@@ -56,6 +56,12 @@ resource "aws_ami" "generated_ami" {
   name        = "my-custom-ami"
   description = "AMI built with Terraform and GitHub Actions"
   root_device_name = "/dev/sda1"
+  # Explicitly define block device mappings
+  root_block_device {
+    volume_size           = 8  # Adjust as needed
+    volume_type           = "gp2"  # Or your desired volume type
+    delete_on_termination = true
+  }
 }
 
 output "ami_id" {
