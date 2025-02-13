@@ -51,15 +51,3 @@ resource "aws_instance" "ami_builder" {
     host        = self.public_ip
   }
 }
-
-resource "aws_ami" "generated_ami" {
-  name        = "my-custom-ami"
-  description = "AMI built with Terraform and GitHub Actions"
-  root_device_name = "/dev/sda1"
- 
-  source_instance_id = aws_instance.ami_builder.id 
-}
-
-output "ami_id" {
-  value = aws_ami.generated_ami.id
-}
