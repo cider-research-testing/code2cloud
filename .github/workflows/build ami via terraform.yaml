@@ -33,4 +33,4 @@ jobs:
       - name: Terraform Apply 
         run: |
           cd build-ami
-          terraform apply -chdir=terraform -auto-approve   
+          terraform apply -auto-approve   
