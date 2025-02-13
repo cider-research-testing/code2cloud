@@ -48,5 +48,6 @@ resource "aws_instance" "ami_builder" {
   connection {
     type        = "ssh"
     user        = "ubuntu"  # Or the appropriate user for your AMI
+    host        = self.public_ip
   }
 }
