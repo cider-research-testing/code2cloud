@@ -28,7 +28,7 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Create private certificate PEM file  
-        run: echo "${{ secrets.PACKER_SSH_PRIVATE_KEY }}" > key.pem
+        run: echo "${{ secrets.PACKER_SSH_PRIVATE_KEY }}" > build-ami/key.pem
         shell: bash
           
         
