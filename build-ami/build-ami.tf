@@ -17,6 +17,26 @@ variable "aws_region" {
   description = "AWS region to deploy to"
 }
 
+# Create temporary security group
+resource "aws_security_group" "temp" {
+  name        = "temp-sg-${random_string.suffix.result}"
+  description = "Temporary security group for AMI creation"
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
 resource "aws_instance" "ami_builder" {
   ami           = "ami-04b4f1a9cf54c11d0"  # Replace with a suitable Ubuntu AMI ID for your region
   instance_type = "t3.micro"  # Or a more appropriate instance type
@@ -51,23 +71,5 @@ resource "aws_instance" "ami_builder" {
     host        = self.public_ip
   }
 
-  # Create temporary security group
-  resource "aws_security_group" "temp" {
-    name        = "temp-sg-${random_string.suffix.result}"
-    description = "Temporary security group for AMI creation"
-  
-    ingress {
-      from_port   = 22
-      to_port     = 22
-      protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
-    }
-  
-    egress {
-      from_port   = 0
-      to_port     = 0
-      protocol    = "-1"
-      cidr_blocks = ["0.0.0.0/0"]
-    }
-  }
+ 
 }
