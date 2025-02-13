@@ -27,10 +27,8 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Terraform Init
-        run: terraform init -chdir=terraform
-
       - name: Terraform Apply 
         run: |
           cd build-ami
+          terraform init
           terraform apply -auto-approve   
