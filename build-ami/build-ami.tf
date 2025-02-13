@@ -50,4 +50,24 @@ resource "aws_instance" "ami_builder" {
     user        = "ubuntu"  # Or the appropriate user for your AMI
     host        = self.public_ip
   }
+
+  # Create temporary security group
+  resource "aws_security_group" "temp" {
+    name        = "temp-sg-${random_string.suffix.result}"
+    description = "Temporary security group for AMI creation"
+  
+    ingress {
+      from_port   = 22
+      to_port     = 22
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+  
+    egress {
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+  }
 }
