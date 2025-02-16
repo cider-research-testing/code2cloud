@@ -36,4 +36,5 @@ jobs:
         run: |
           cd build-ami
           terraform init
+          terraform plan
           terraform apply -auto-approve   
