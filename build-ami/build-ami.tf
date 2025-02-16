@@ -96,3 +96,16 @@ resource "aws_instance" "ami_builder" {
     ]
   }
 }
+
+# Add this after your aws_instance resource
+resource "aws_ami_from_instance" "example" {
+  name               = "my-custom-ami-from-tf"
+  source_instance_id = aws_instance.ami_builder.id
+
+  # Wait for the provisioners to complete before creating the AMI
+  depends_on = [aws_instance.ami_builder]
+
+  tags = {
+    Name = "Custom AMI from tf"
+  }
+}
