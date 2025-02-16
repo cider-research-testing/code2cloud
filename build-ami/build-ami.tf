@@ -76,10 +76,10 @@ resource "aws_instance" "ami_builder" {
     Name = "AMI Builder"
   }
 
-  #provisioner "file" {
-  #  source      = "main.py"
-  #  destination = "/tmp/main.py"  # Copy script to the instance
-  #}
+  provisioner "file" {
+    source      = "main.py"
+    destination = "/tmp/main.py"  # Copy script to the instance
+  }
 
   provisioner "remote-exec" {
     inline = [
