@@ -89,7 +89,7 @@ connection {
     type        = "ssh"
     user        = "ubuntu"
     host        = self.public_ip
-    private_key = length(data.aws_key_pair.existing_key.id) > 0 ? file("~/.ssh/my-key.pem") : tls_private_key.my_key[0].private_key_pem
+    private_key = length(data.aws_key_pair.existing_key.id) > 0 ? file("${path.module}/my-key.pem") : tls_private_key.my_key[0].private_key_pem
 }
 
   provisioner "file" {
