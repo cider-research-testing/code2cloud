@@ -25,21 +25,28 @@ data "aws_security_groups" "existing_sg" {
   }
 }
 
-# Generate an SSH key pair
+# Check if the key pair already exists in AWS
+data "aws_key_pair" "existing_key" {
+  key_name = "my-key-pair"
+}
+
+# Conditionally create the key only if it doesn’t exist
 resource "tls_private_key" "my_key" {
+  count     = length(data.aws_key_pair.existing_key.id) > 0 ? 0 : 1
   algorithm = "RSA"
   rsa_bits  = 4096
 }
 
-# Create an AWS key pair using the generated public key
 resource "aws_key_pair" "my_key" {
+  count      = length(data.aws_key_pair.existing_key.id) > 0 ? 0 : 1
   key_name   = "my-key-pair"
-  public_key = tls_private_key.my_key.public_key_openssh
+  public_key = tls_private_key.my_key[0].public_key_openssh
 }
 
-# Save the private key locally (Optional, useful for SSH access)
+# Save the private key locally for SSH access
 resource "local_file" "private_key" {
-  content  = tls_private_key.my_key.private_key_pem
+  count    = length(data.aws_key_pair.existing_key.id) > 0 ? 0 : 1
+  content  = tls_private_key.my_key[0].private_key_pem
   filename = "${path.module}/my-key.pem"
 }
 
@@ -73,7 +80,7 @@ resource "aws_instance" "ami_builder" {
   #vpc_security_group_ids = ["${aws_security_group.aws_ami_test3.id}"]
   key_name      = "my-key-pair"
   tags = {
-    Name = "AMI Builder"
+    Name = "AMI Builder from TF"
   }
 
   connection {
