@@ -76,10 +76,16 @@ resource "aws_instance" "ami_builder" {
     Name = "AMI Builder"
   }
 
+  connection {
+    type        = "ssh"
+    user        = "ubuntu"  # Or the appropriate user for your AMI
+    host        = self.public_ip
+    private_key = tls_private_key.my_key.private_key_pem
+  } 
+
   provisioner "file" {
     source      = "main.py"
     destination = "/tmp/main.py"  # Copy script to the instance
-    private_key = tls_private_key.my_key.private_key_pem
   }
 
   provisioner "remote-exec" {
@@ -89,18 +95,4 @@ resource "aws_instance" "ami_builder" {
       "sudo python3 /tmp/main.py",  # Execute the script
     ]
   }
-
-  provisioner "remote-exec" {
-    inline = [
-      "sudo apt-get update",
-      "sudo python3 /tmp/main.py",  # Execute the script
-    ]
-  }
-
-  connection {
-    type        = "ssh"
-    user        = "ubuntu"  # Or the appropriate user for your AMI
-    host        = self.public_ip
-    private_key = tls_private_key.my_key.private_key_pem
-  } 
 }
