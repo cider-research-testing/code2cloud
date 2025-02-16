@@ -25,28 +25,21 @@ data "aws_security_groups" "existing_sg" {
   }
 }
 
-# Check if the key pair already exists in AWS
-data "aws_key_pair" "existing_key" {
-  key_name = "my-key-pair"
-}
-
-# Conditionally create the key only if it doesn’t exist
+# Generate an SSH key pair
 resource "tls_private_key" "my_key" {
-  count     = length(data.aws_key_pair.existing_key.id) > 0 ? 0 : 1
   algorithm = "RSA"
   rsa_bits  = 4096
 }
 
+# Create an AWS key pair using the generated public key
 resource "aws_key_pair" "my_key" {
-  count      = length(data.aws_key_pair.existing_key.id) > 0 ? 0 : 1
   key_name   = "my-key-pair"
-  public_key = tls_private_key.my_key[0].public_key_openssh
+  public_key = tls_private_key.my_key.public_key_openssh
 }
 
-# Save the private key locally for SSH access
+# Save the private key locally (Optional, useful for SSH access)
 resource "local_file" "private_key" {
-  count    = length(data.aws_key_pair.existing_key.id) > 0 ? 0 : 1
-  content  = tls_private_key.my_key[0].private_key_pem
+  content  = tls_private_key.my_key.private_key_pem
   filename = "${path.module}/my-key.pem"
 }
 
@@ -78,19 +71,17 @@ resource "aws_instance" "ami_builder" {
   instance_type = "t3.micro"  # Or a more appropriate instance type
   vpc_security_group_ids = length(data.aws_security_groups.existing_sg.ids) > 0 ? data.aws_security_groups.existing_sg.ids : [aws_security_group.aws_ami_test3[0].id]
   #vpc_security_group_ids = ["${aws_security_group.aws_ami_test3.id}"]
-  # Use the existing key or the newly created one
-  key_name = length(data.aws_key_pair.existing_key.id) > 0 ? data.aws_key_pair.existing_key.key_name : aws_key_pair.my_key[0].key_name
-
+  key_name      = "my-key-pair"
   tags = {
-    Name = "AMI Builder from TF"
+    Name = "AMI Builder"
   }
 
-connection {
+  connection {
     type        = "ssh"
-    user        = "ubuntu"
+    user        = "ubuntu"  # Or the appropriate user for your AMI
     host        = self.public_ip
-    private_key = length(data.aws_key_pair.existing_key.id) > 0 ? file("${path.module}/my-key.pem") : tls_private_key.my_key[0].private_key_pem
-}
+    private_key = tls_private_key.my_key.private_key_pem
+  } 
 
   provisioner "file" {
     source      = "../main.py"
