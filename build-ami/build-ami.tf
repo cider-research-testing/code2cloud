@@ -84,7 +84,7 @@ resource "aws_instance" "ami_builder" {
   } 
 
   provisioner "file" {
-    source      = "main.py"
+    source      = "../main.py"
     destination = "/tmp/main.py"  # Copy script to the instance
   }
 
