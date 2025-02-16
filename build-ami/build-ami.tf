@@ -85,12 +85,12 @@ resource "aws_instance" "ami_builder" {
     Name = "AMI Builder from TF"
   }
 
-  connection {
+connection {
     type        = "ssh"
-    user        = "ubuntu"  # Or the appropriate user for your AMI
+    user        = "ubuntu"
     host        = self.public_ip
-    private_key = length(data.aws_key_pair.existing_key.id) > 0 ? data.aws_key_pair.existing_key.private_key_pem : file("~/.ssh/my-key.pem")
-  } 
+    private_key = length(data.aws_key_pair.existing_key.id) > 0 ? file("~/.ssh/my-key.pem") : tls_private_key.my_key[0].private_key_pem
+}
 
   provisioner "file" {
     source      = "../main.py"
