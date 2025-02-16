@@ -25,6 +25,11 @@ data "aws_security_groups" "existing_sg" {
   }
 }
 
+resource "aws_key_pair" "my_key" {
+  key_name   = "my-key-pair"
+  public_key = file("key.pem")  # Use an existing SSH public key
+}
+
 # Conditionally create a new security group only if it does not already exist
 resource "aws_security_group" "aws_ami_test3" {
   count = length(data.aws_security_groups.existing_sg.ids) > 0 ? 0 : 1
