@@ -17,9 +17,21 @@ variable "aws_region" {
   description = "AWS region to deploy to"
 }
 
-resource "aws_security_group" "test3" {
+# Fetch existing security groups with the given name
+data "aws_security_groups" "existing_sg" {
+  filter {
+    name   = "group-name"
+    values = ["aws-ami-test3"]
+  }
+}
+
+# Conditionally create a new security group only if it does not already exist
+resource "aws_security_group" "aws_ami_test3" {
+  count = length(data.aws_security_groups.existing_sg.ids) > 0 ? 0 : 1
+
   name        = "aws-ami-test3"
-  description = "Allow ssh  inbound traffic"
+  description = "Security group for aws-ami-test3"
+  vpc_id      = "vpc-03049671223312878"
 
   ingress {
     from_port   = 22
@@ -27,16 +39,14 @@ resource "aws_security_group" "test3" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
- 
-  egress {
-    from_port       = 0
-    to_port         = 0
-    protocol        = "-1"
-    cidr_blocks     = ["0.0.0.0/0"]
 
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }
-
 
 resource "aws_instance" "ami_builder" {
   ami           = "ami-04b4f1a9cf54c11d0"  # Replace with a suitable Ubuntu AMI ID for your region
