@@ -51,7 +51,8 @@ resource "aws_security_group" "aws_ami_test3" {
 resource "aws_instance" "ami_builder" {
   ami           = "ami-04b4f1a9cf54c11d0"  # Replace with a suitable Ubuntu AMI ID for your region
   instance_type = "t3.micro"  # Or a more appropriate instance type
-  vpc_security_group_ids = ["${aws_security_group.aws_ami_test3.id}"]
+  vpc_security_group_ids = length(data.aws_security_groups.existing_sg.ids) > 0 ? data.aws_security_groups.existing_sg.ids : [aws_security_group.aws_ami_test3[0].id]
+  #vpc_security_group_ids = ["${aws_security_group.aws_ami_test3.id}"]
   key_name      = "my-key-pair"
   tags = {
     Name = "AMI Builder"
