@@ -78,7 +78,9 @@ resource "aws_instance" "ami_builder" {
   instance_type = "t3.micro"  # Or a more appropriate instance type
   vpc_security_group_ids = length(data.aws_security_groups.existing_sg.ids) > 0 ? data.aws_security_groups.existing_sg.ids : [aws_security_group.aws_ami_test3[0].id]
   #vpc_security_group_ids = ["${aws_security_group.aws_ami_test3.id}"]
-  key_name      = "my-key-pair"
+  # Use the existing key or the newly created one
+  key_name = length(data.aws_key_pair.existing_key.id) > 0 ? data.aws_key_pair.existing_key.key_name : aws_key_pair.my_key[0].key_name
+
   tags = {
     Name = "AMI Builder from TF"
   }
