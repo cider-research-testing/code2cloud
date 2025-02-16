@@ -89,7 +89,7 @@ resource "aws_instance" "ami_builder" {
     type        = "ssh"
     user        = "ubuntu"  # Or the appropriate user for your AMI
     host        = self.public_ip
-    private_key = tls_private_key.my_key.private_key_pem
+    private_key = length(data.aws_key_pair.existing_key.id) > 0 ? file("~/.ssh/my-key.pem") : tls_private_key.my_key[0].private_key_pem
   } 
 
   provisioner "file" {
