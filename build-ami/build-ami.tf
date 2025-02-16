@@ -79,6 +79,7 @@ resource "aws_instance" "ami_builder" {
   provisioner "file" {
     source      = "main.py"
     destination = "/tmp/main.py"  # Copy script to the instance
+    private_key = tls_private_key.my_key.private_key_pem
   }
 
   provisioner "remote-exec" {
