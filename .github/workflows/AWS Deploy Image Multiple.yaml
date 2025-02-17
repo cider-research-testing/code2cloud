@@ -85,9 +85,9 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Docker compose build
-        run: docker buildx build -t ycider/code2prod:latest .
+        run: docker buildx build -t ycider/code2prod:buildx .
       - name: Docker compose build
-        run: docker push
+        run: docker push ycider/code2prod:buildx
         
   build-buildpacks:
     runs-on: ubuntu-latest
