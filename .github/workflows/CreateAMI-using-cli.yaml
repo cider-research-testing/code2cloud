@@ -38,7 +38,7 @@ jobs:
       id: launch_ec2
       run: |
         INSTANCE_ID=$(aws ec2 run-instances \
-          --image-id ami-04b4f1a9cf54c11d0 \ # Replace with your preferred Ubuntu AMI ID
+          --image-id ami-04b4f1a9cf54c11d0 \
           --instance-type t3.micro \
           --key-name $KEY_NAME
           --query 'Instances[0].InstanceId' \
