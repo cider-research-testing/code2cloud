@@ -3,10 +3,7 @@ name: Build ami via terraform
 env:
   AWS_REGION: us-east-1  # Replace with your desired AWS region
 
-on:
-  push:
-    branches:
-      - main  # Or your main branch
+on: 
   workflow_dispatch: # Allows manual triggering
 
 jobs:
