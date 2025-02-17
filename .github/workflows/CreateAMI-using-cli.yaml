@@ -40,7 +40,7 @@ jobs:
         INSTANCE_ID=$(aws ec2 run-instances \
           --image-id ami-04b4f1a9cf54c11d0 \
           --instance-type t3.micro \
-          --key-name $KEY_NAME
+          --key-name $KEY_NAME \
           --query 'Instances[0].InstanceId' \
           --output text)
         echo "::set-output name=instance_id::$INSTANCE_ID"
