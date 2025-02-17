@@ -1,0 +1,65 @@
+name: Create AMI Using Cli
+ 
+env:
+  AWS_REGION: us-east-1  # Replace with your desired AWS region
+
+on:
+  push:
+    branches:
+      - main
+   workflow_dispatch:
+
+jobs:
+  create-ami:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET }}
+        aws-region: ${{ env.AWS_REGION }}    
+
+    - name: Create SSH key pair
+      id: create_key_pair
+      run: |
+        KEY_NAME="github-actions-key-$(date +%Y%m%d%H%M%S)"
+        aws ec2 create-key-pair --key-name $KEY_NAME --query 'KeyMaterial' --output text > $KEY_NAME.pem
+        chmod 400 $KEY_NAME.pem
+        echo "::set-output name=key_name::$KEY_NAME"
+        echo "Key Pair Name: $KEY_NAME"
+
+
+    - name: Launch an EC2 instance with Ubuntu
+      id: launch_ec2
+      run: |
+        INSTANCE_ID=$(aws ec2 run-instances \
+          --image-id ami-04b4f1a9cf54c11d0 \ # Replace with your preferred Ubuntu AMI ID
+          --instance-type t3.micro \
+          --key-name $KEY_NAME
+          --query 'Instances[0].InstanceId' \
+          --output text)
+        echo "::set-output name=instance_id::$INSTANCE_ID"
+        echo "Instance ID: $INSTANCE_ID"
+
+    - name: Wait for EC2 instance to be in running state
+      run: |
+        INSTANCE_ID=${{ steps.launch_ec2.outputs.instance_id }}
+        aws ec2 wait instance-running --instance-ids $INSTANCE_ID
+
+    - name: Create AMI from EC2 instance
+      id: create_ami
+      run: |
+        INSTANCE_ID=${{ steps.launch_ec2.outputs.instance_id }}
+        AMI_ID=$(aws ec2 create-image \
+          --instance-id $INSTANCE_ID \
+          --name "MyUbuntuAMI-$(date +%Y-%m-%d-%H-%M-%S)" \
+          --no-reboot \
+          --query 'ImageId' \
+          --output text)
+        echo "::set-output name=ami_id::$AMI_ID"
+        echo "AMI ID: $AMI_ID"  
