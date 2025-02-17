@@ -1,4 +1,4 @@
-name: Deploy to AWS Lambda using Image
+name: AWS Deploy Image Multiple
 
 on:
   workflow_dispatch
