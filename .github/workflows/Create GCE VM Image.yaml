@@ -1,0 +1,68 @@
+name: Create GCE VM Image
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  create-gce-image:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@v0
+      with:
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+        service_account_key: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+        export_default_credentials: true
+
+    - name: Set up environment variables
+      run: |
+        echo "GCP_PROJECT_ID=${{ secrets.GCP_PROJECT_ID }}" >> $GITHUB_ENV
+        echo "GCP_ZONE=${{ secrets.GCP_ZONE }}" >> $GITHUB_ENV
+
+    - name: Create VM instance
+      id: create_vm
+      run: |
+        VM_NAME="github-actions-vm-$(date +%Y%m%d%H%M%S)"
+        gcloud compute instances create $VM_NAME \
+          --image-family=ubuntu-2004-lts \
+          --image-project=ubuntu-os-cloud \
+          --zone=$GCP_ZONE \
+          --machine-type=e2-micro
+        echo "::set-output name=vm_name::$VM_NAME"
+        echo "VM Name: $VM_NAME"
+
+    - name: Wait for VM to be ready
+      run: |
+        VM_NAME=${{ steps.create_vm.outputs.vm_name }}
+        until gcloud compute ssh $VM_NAME --zone=$GCP_ZONE --command "echo VM is ready"; do
+          echo "Waiting for VM to be ready..."
+          sleep 10
+        done
+
+    - name: Create custom image from VM
+      id: create_image
+      run: |
+        VM_NAME=${{ steps.create_vm.outputs.vm_name }}
+        IMAGE_NAME="custom-ubuntu-image-$(date +%Y%m%d%H%M%S)"
+        gcloud compute images create $IMAGE_NAME \
+          --source-disk=$VM_NAME \
+          --source-disk-zone=$GCP_ZONE \
+          --family=custom-ubuntu
+        echo "::set-output name=image_name::$IMAGE_NAME"
+        echo "Image Name: $IMAGE_NAME"
+
+    - name: Delete VM instance
+      run: |
+        VM_NAME=${{ steps.create_vm.outputs.vm_name }}
+        gcloud compute instances delete $VM_NAME --zone=$GCP_ZONE --quiet
+
+    - name: Output custom image name
+      run: |
+        IMAGE_NAME=${{ steps.create_image.outputs.image_name }}
+        echo "Created Image Name: $IMAGE_NAME"
