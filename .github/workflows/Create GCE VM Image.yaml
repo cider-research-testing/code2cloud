@@ -30,7 +30,7 @@ jobs:
         echo "GCP_PROJECT_ID=${{ secrets.GCP_PROJECT_ID }}" >> $GITHUB_ENV
         echo "GCP_ZONE=${{ secrets.GCP_ZONE }}" >> $GITHUB_ENV
 
-     - name: Create VM instance
+    - name: Create VM instance
       id: create_vm
       run: |
         VM_NAME="github-actions-vm-$(date +%Y%m%d%H%M%S)"
