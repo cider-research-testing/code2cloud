@@ -30,7 +30,7 @@ jobs:
         echo "GCP_PROJECT_ID=${{ secrets.GCP_PROJECT_ID }}" >> $GITHUB_ENV
         echo "GCP_ZONE=${{ secrets.GCP_ZONE }}" >> $GITHUB_ENV
 
-    - name: Create VM instance
+     - name: Create VM instance
       id: create_vm
       run: |
         VM_NAME="github-actions-vm-$(date +%Y%m%d%H%M%S)"
@@ -50,7 +50,12 @@ jobs:
           sleep 10
         done
 
-    - name: Create custom image from VM
+    - name: Stop VM instance
+      run: |
+        VM_NAME=${{ steps.create_vm.outputs.vm_name }}
+        gcloud compute instances stop $VM_NAME --zone=$GCP_ZONE
+
+    - name: Create custom image from VM disk
       id: create_image
       run: |
         VM_NAME=${{ steps.create_vm.outputs.vm_name }}
@@ -61,13 +66,3 @@ jobs:
           --family=custom-ubuntu
         echo "::set-output name=image_name::$IMAGE_NAME"
         echo "Image Name: $IMAGE_NAME"
-
-    - name: Delete VM instance
-      run: |
-        VM_NAME=${{ steps.create_vm.outputs.vm_name }}
-        gcloud compute instances delete $VM_NAME --zone=$GCP_ZONE --quiet
-
-    - name: Output custom image name
-      run: |
-        IMAGE_NAME=${{ steps.create_image.outputs.image_name }}
-        echo "Created Image Name: $IMAGE_NAME"
