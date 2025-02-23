@@ -1,4 +1,4 @@
-name: Build ami via terraform
+name: Build GCP VM via terraform
 
 env:
   AWS_REGION: us-east-1  # Replace with your desired AWS region
