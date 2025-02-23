@@ -21,7 +21,7 @@ resource "local_file" "private_key" {
 
 # Create a GCP firewall rule
 resource "google_compute_firewall" "firewall" {
-  name    = "allow-ssh"
+  name    = "allow-ssh-vm"
   network = "default"
 
   allow {
