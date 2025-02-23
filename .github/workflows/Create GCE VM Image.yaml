@@ -1,9 +1,6 @@
 name: Create GCE VM Image
 
-on:
-  push:
-    branches:
-      - main
+on: 
   workflow_dispatch:
 
 jobs:
