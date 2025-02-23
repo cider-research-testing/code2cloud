@@ -36,7 +36,7 @@ resource "google_compute_firewall" "firewall" {
 resource "google_compute_instance" "vm_instance" {
   name         = "vm-instance"
   machine_type = "e2-micro"
-  zone         = "${var.region}-b"
+  zone         = "us-east1"
 
   boot_disk {
     initialize_params {
