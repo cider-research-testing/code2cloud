@@ -7,22 +7,6 @@ terraform {
   }
 }
 
-provider "google" {
-  region  = var.region
-  project = var.project_id
-}
-
-variable "region" {
-  type        = string
-  default     = "us-east1"  # Replace with your desired GCP region
-  description = "GCP region to deploy to"
-}
-
-variable "project_id" {
-  type        = string
-  description = "GCP project ID"
-}
-
 # Generate an SSH key pair
 resource "tls_private_key" "my_key" {
   algorithm = "RSA"
