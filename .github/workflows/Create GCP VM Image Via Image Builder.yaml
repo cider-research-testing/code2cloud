@@ -1,7 +1,36 @@
- - name: Build Image with Imagebuilder
-        run: |
-          docker run --rm \
-            -v $(pwd):/workspace \
-            -e GOOGLE_APPLICATION_CREDENTIALS=/workspace/sa-key.json \
-            gcr.io/cloud-marketplace-tools/vm/imagebuilder:0.1.6 \
-            build --config=/workspace/image-config.yaml
+name: Create GCP VM Image Via Image Builder
+
+on: 
+  workflow_dispatch:
+
+jobs:
+  create-gce-image:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v2'
+      with:
+        credentials_json: '${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}'
+
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@v2.1.4
+      with:
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+    - name: Set up environment variables
+      run: |
+        gcloud compute zones list
+        echo "GCP_PROJECT_ID=${{ secrets.GCP_PROJECT_ID }}" >> $GITHUB_ENV
+        echo "GCP_ZONE=${{ secrets.GCP_ZONE }}" >> $GITHUB_ENV
+
+    - name: Build Image with Imagebuilder
+      run: |
+         docker run --rm \
+           -v $(pwd):/workspace \
+           -e GOOGLE_APPLICATION_CREDENTIALS=/workspace/sa-key.json \
+           gcr.io/cloud-marketplace-tools/vm/imagebuilder:0.1.6 \
+           build --config=/workspace/image-config.yaml
