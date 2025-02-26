@@ -22,12 +22,6 @@ jobs:
       with:
         project_id: ${{ secrets.GCP_PROJECT_ID }}
 
-    - name: Set up environment variables
-      run: |
-        echo "GCP_PROJECT_ID=${{ secrets.GCP_PROJECT_ID }}" >> $GITHUB_ENV
-        echo "GCP_ZONE=${{ secrets.GCP_ZONE }}" >> $GITHUB_ENV
-        echo $GOOGLE_GHA_CREDS_PATH
-
     - name: Configure Docker for GCR
       run: |
         gcloud auth configure-docker --quiet
@@ -38,5 +32,6 @@ jobs:
            -v $(pwd):/workspace \
            -e GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_GHA_CREDS_PATH \
            -e BUCKET=for-image-builder \
+           -e PROJECT=asi-ai \
            gcr.io/cloud-marketplace-tools/vm/imagebuilder:0.1.12 \
            build --config=/workspace/image-config.yaml
