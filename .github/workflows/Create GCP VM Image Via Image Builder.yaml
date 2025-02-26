@@ -33,5 +33,6 @@ jobs:
            -e GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_GHA_CREDS_PATH \
            -e BUCKET=for-image-builder \
            -e PROJECT=asi-ai \
+           -e SOLUTION_NAME=vm-from-builder \
            gcr.io/cloud-marketplace-tools/vm/imagebuilder:0.1.12 \
            build --config=/workspace/image-config.yaml
