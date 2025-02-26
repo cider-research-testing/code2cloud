@@ -35,6 +35,6 @@ jobs:
            -e PROJECT=asi-ai \
            -e SOLUTION_NAME=vm-from-builder \
            -e KEY_FILE_PATH='${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}' \
-           -e SERVICE_ACCOUNT_EMAIL: ${{ secrets.SERVICE_ACCOUNT_EMAIL }} \
+           -e SERVICE_ACCOUNT_EMAIL=${{ secrets.SERVICE_ACCOUNT_EMAIL }} \
            gcr.io/cloud-marketplace-tools/vm/imagebuilder:0.1.12 \
            build --config=/workspace/image-config.yaml
