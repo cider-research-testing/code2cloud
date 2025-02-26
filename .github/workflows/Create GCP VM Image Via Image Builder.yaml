@@ -25,6 +25,7 @@ jobs:
       run: |
         echo "GCP_PROJECT_ID=${{ secrets.GCP_PROJECT_ID }}" >> $GITHUB_ENV
         echo "GCP_ZONE=${{ secrets.GCP_ZONE }}" >> $GITHUB_ENV
+        echo $GOOGLE_GHA_CREDS_PATH
 
     - name: Build Image with Imagebuilder
       run: |
