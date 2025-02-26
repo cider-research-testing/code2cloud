@@ -1,5 +1,6 @@
 solution_name: my-custom-image-from-image-builder
 gcp_project: asi-ai
 base_image: projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20250210
+bucket: for-image-builder  # Store bucket name in GitHub Secrets
 packages:
   - nginx
