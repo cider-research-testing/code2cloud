@@ -1,4 +1,4 @@
-name: Create GCE VM Image CLI
+name: Create GCP VM Image CLI
 
 on: 
   workflow_dispatch:
