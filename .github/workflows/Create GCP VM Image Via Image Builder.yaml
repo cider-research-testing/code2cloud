@@ -2,6 +2,7 @@ name: Create GCP VM Image Via Image Builder
 
 on: 
   workflow_dispatch:
+  push:
 
 jobs:
   create-gce-image:
@@ -36,5 +37,6 @@ jobs:
          docker run --rm \
            -v $(pwd):/workspace \
            -e GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_GHA_CREDS_PATH \
+           -e BUCKET=for-image-builder \
            gcr.io/cloud-marketplace-tools/vm/imagebuilder:0.1.12 \
            build --config=/workspace/image-config.yaml
