@@ -27,6 +27,10 @@ jobs:
         echo "GCP_ZONE=${{ secrets.GCP_ZONE }}" >> $GITHUB_ENV
         echo $GOOGLE_GHA_CREDS_PATH
 
+    - name: Configure Docker for GCR
+      run: |
+        gcloud auth configure-docker --quiet
+
     - name: Build Image with Imagebuilder
       run: |
          docker run --rm \
