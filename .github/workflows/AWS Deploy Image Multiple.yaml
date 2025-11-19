@@ -33,7 +33,7 @@ jobs:
         IMAGE_TAG: ${{ github.sha }}
       run: |
         # Build Docker image
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker build -f Dockerfile-new -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         
         # Push image to ECR
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
